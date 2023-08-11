@@ -5,13 +5,13 @@ import java.util.Optional;
 import mate.academy.model.Book;
 
 public interface BookDao {
-  Book create(Book book);
+    Book create(Book book);
 
-  Optional<Book> findById(Long id);
+    Optional<Book> findById(Long id);
 
-  List<Book> findAll();
+    List<Book> findAll();
 
-  Book update(Book book);
+    Book update(Book book);
 
-  boolean deleteById(Long id);
+    boolean deleteById(Long id);
 }

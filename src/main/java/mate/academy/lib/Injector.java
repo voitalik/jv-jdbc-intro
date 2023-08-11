@@ -31,37 +31,6 @@ public class Injector {
         return injector;
     }
 
-    public Object getInstance(Class<?> certainInterface) {
-        Class<?> clazz = findClassExtendingInterface(certainInterface);
-        return createInstance(clazz);
-    }
-
-    private Class<?> findClassExtendingInterface(Class<?> certainInterface) {
-        for (Class<?> clazz : classes) {
-            Class<?>[] interfaces = clazz.getInterfaces();
-            for (Class<?> singleInterface : interfaces) {
-                if (singleInterface.equals(certainInterface)
-                        && clazz.isAnnotationPresent(Dao.class)) {
-                    return clazz;
-                }
-            }
-        }
-        throw new RuntimeException("Can't find class which implements "
-                + certainInterface.getName()
-                + " interface and has valid annotation (Dao or Service)");
-    }
-
-    private Object createInstance(Class<?> clazz) {
-        Object newInstance;
-        try {
-            Constructor<?> classConstructor = clazz.getConstructor();
-            newInstance = classConstructor.newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("Can't create object of the class", e);
-        }
-        return newInstance;
-    }
-
     /**
      * Scans all classes accessible from the context class loader which
      * belong to the given package and subpackages.
@@ -102,7 +71,7 @@ public class Injector {
     private static List<Class<?>> findClasses(File directory, String packageName)
             throws ClassNotFoundException {
         List<Class<?>> classes = new ArrayList<>();
-        if (!directory.exists()) {
+        if (! directory.exists()) {
             return classes;
         }
         File[] files = directory.listFiles();
@@ -121,5 +90,36 @@ public class Injector {
             }
         }
         return classes;
+    }
+
+    public Object getInstance(Class<?> certainInterface) {
+        Class<?> clazz = findClassExtendingInterface(certainInterface);
+        return createInstance(clazz);
+    }
+
+    private Class<?> findClassExtendingInterface(Class<?> certainInterface) {
+        for (Class<?> clazz : classes) {
+            Class<?>[] interfaces = clazz.getInterfaces();
+            for (Class<?> singleInterface : interfaces) {
+                if (singleInterface.equals(certainInterface)
+                        && clazz.isAnnotationPresent(Dao.class)) {
+                    return clazz;
+                }
+            }
+        }
+        throw new RuntimeException("Can't find class which implements "
+                + certainInterface.getName()
+                + " interface and has valid annotation (Dao or Service)");
+    }
+
+    private Object createInstance(Class<?> clazz) {
+        Object newInstance;
+        try {
+            Constructor<?> classConstructor = clazz.getConstructor();
+            newInstance = classConstructor.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Can't create object of the class", e);
+        }
+        return newInstance;
     }
 }
