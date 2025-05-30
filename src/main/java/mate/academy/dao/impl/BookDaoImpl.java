@@ -21,7 +21,8 @@ public class BookDaoImpl implements BookDao {
     public Book create(Book book) {
         String sqlQuery = "INSERT INTO books (title, price) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement statement = connection.prepareStatement(sqlQuery,
+                        Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, book.getTitle());
             statement.setObject(2, book.getPrice());
             int updatedRows = statement.executeUpdate();
@@ -43,7 +44,7 @@ public class BookDaoImpl implements BookDao {
         Book book = null;
         String sqlQuery = "SELECT * FROM books WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.setObject(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -59,7 +60,7 @@ public class BookDaoImpl implements BookDao {
         List<Book> books = new ArrayList<>();
         String sqlQuery = "SELECT * FROM books;";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Book book = getBook(resultSet);
@@ -75,7 +76,7 @@ public class BookDaoImpl implements BookDao {
     public Book update(Book book) {
         String sqlQuery = "UPDATE books SET title = ?, price = ? WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.setString(1, book.getTitle());
             statement.setObject(2, book.getPrice());
             statement.setObject(3, book.getId());
@@ -93,7 +94,7 @@ public class BookDaoImpl implements BookDao {
     public boolean deleteById(Long id) {
         String sqlQuery = "DELETE FROM books WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+                PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.setObject(1, id);
             int updatedRows = statement.executeUpdate();
             return updatedRows > 0;

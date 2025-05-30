@@ -31,6 +31,11 @@ public class Injector {
         return injector;
     }
 
+    public Object getInstance(Class<?> certainInterface) {
+        Class<?> clazz = findClassExtendingInterface(certainInterface);
+        return createInstance(clazz);
+    }
+
     /**
      * Scans all classes accessible from the context class loader which
      * belong to the given package and subpackages.
@@ -71,7 +76,7 @@ public class Injector {
     private static List<Class<?>> findClasses(File directory, String packageName)
             throws ClassNotFoundException {
         List<Class<?>> classes = new ArrayList<>();
-        if (! directory.exists()) {
+        if (!directory.exists()) {
             return classes;
         }
         File[] files = directory.listFiles();
@@ -90,11 +95,6 @@ public class Injector {
             }
         }
         return classes;
-    }
-
-    public Object getInstance(Class<?> certainInterface) {
-        Class<?> clazz = findClassExtendingInterface(certainInterface);
-        return createInstance(clazz);
     }
 
     private Class<?> findClassExtendingInterface(Class<?> certainInterface) {
