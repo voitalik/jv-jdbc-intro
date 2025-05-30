@@ -85,7 +85,7 @@ public class BookDaoImpl implements BookDao {
                 throw new SQLException("A row was not updated.");
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can not create a new book: " + book, e);
+            throw new DataProcessingException("Can not update a book: " + book, e);
         }
         return book;
     }
@@ -99,7 +99,7 @@ public class BookDaoImpl implements BookDao {
             int updatedRows = statement.executeUpdate();
             return updatedRows > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can not create a new book: " + id, e);
+            throw new DataProcessingException("Can not delete a book: " + id, e);
         }
     }
 
